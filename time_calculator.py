@@ -45,7 +45,7 @@ def add_time(start, duration, day = None):
     # Final hour is within 24 HRs
     end_hr = end_hr % 24
 
-    # return str formatting
+    # Formatting the return string.
     # "0" padding for minutes < 10
     if end_min < 10:
         min = "0" + str(end_min)
@@ -66,44 +66,58 @@ def add_time(start, duration, day = None):
 
     hr = str(end_hr)
 
+    result = hr + ":" + min + " " + p
+
     # Tests: [1, ]
     if not day:
         # Same day
         if num_days == 0:
-            return hr + ":" + min + " " + p
+            return result
 
+        # The next day
         elif num_days == 1:
-            return hr + ":" + min + " " + p + " (next day)"
+            return result + " (next day)"
 
+        # `n` days later
         else:
-            return hr + ":" + min + " " + p + " (" + str(num_days) + " days later)"
+            return result + " (" + str(num_days) + " days later)"
 
-    # Tests:[]
-    final_day = ""
-    if day:
-        # How many days are gone?
-        num_days = end_hr // 24
+    # Tests: []
 
-        days = {
-            0: "Monday",
-            1: "Tuesday",
-            2: "Wednesday",
-            3: "Thursday",
-            4: "Friday",
-            5: "Saturday",
-            6: "Sunday"
-        }
+    days = {
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+    }
 
-        for k, v in days.items():
-            if v == day.capitalize():
-                final_day = days[(k + num_days) % 7]
+    final_day = None
 
+    for k, d in days.items():
+        if d == day.capitalize():
+            final_day = days[(k + num_days) % 7]
+
+    result += ", " + final_day
+
+    # Same day
+    if num_days == 0:
+        return result
+
+    # The next day
+    elif num_days == 1:
+        return result + " (next day)"
+
+    # `n` days later
+    else:
+        return result + " (" + str(num_days) + " days later)"
     return
 
 # add_time("3:00 PM", "3:10")
-# add_time("11:30 AM", "2:32", "Monday")
+# print(add_time("11:30 AM", "2:32", "Monday"))
 # add_time("9:15 PM", "5:30")
 # add_time("12:59 PM", "24:05")
 # add_time("12:59 AM", "24:05")
-
-print(add_time("11:59 PM", "24:05"))
+# print(add_time("11:59 PM", "24:05"))
